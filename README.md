@@ -5,17 +5,23 @@ Practice solving exercises listed to appear in the exam.
 ## How to Use
 
 1. Choose an exercise and navigate to its folder
-2. 
+2. Read the README
+3. Start editing src/lib.rs directly, or paste template.txt over everything above #[cfg(test)] (see Notes).
+4. Run the code with ```cargo run```
+5. Test the code with ```cargo test```
+6. Look at the solution text files for examples
 
 ## Folder contents
 
-Each src/ subfolder contains all the important files
+- README.md: The execise as it appears on the platform
+
+src/ subfolder:  
 - lib.rs: Write your answer here (exception: brackets_matching, where you write it in main.rs)
 - main.rs:  Runs your code with modifiable inputs
 - tests.rs:  Actual tests the code needs to pass
 - solution01edu.txt: Example solution from the system
-- solutionm: Solution I devised 
-- template.txt: The base for the exercise as it is given on the platform
+- solutionm: My solution
+- template.txt: The empty base for the exercise
 
 
 ## Notes
@@ -60,6 +66,5 @@ negative-spelling
 office-worker  
 
 ## Sources
-Exercises
-Solutions
-Tests
+- [Exercises](https://github.com/01-edu/public/tree/master/subjects)
+- [Solutions and tests](https://github.com/01-edu/rust-tests)
