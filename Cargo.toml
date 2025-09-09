@@ -32,4 +32,4 @@ smallest = { version = "0.1.0", path = "smallest" }
 
 
 [workspace]
-members = [ "blood_types_s" "car_rental", "count_factorial_steps", "counting_words", "display_table", "dress_code", "filter_table", "format_me", "get_document_id", "lib", "lucas_number", "lunch_queue", "matrix_determinant", "matrix_display", "matrix_multiplication", "modify_letter", "moving_targets", "negative_spelling", "office_worker", "partial_sums", "previousprime", "profanity_filter", "reverse_it", "rot21", "smallest"]
+members = [ "blood_types_s", "brackets_matching", "car_rental", "count_factorial_steps", "counting_words", "display_table", "dress_code", "filter_table", "format_me", "get_document_id", "lib", "lucas_number", "lunch_queue", "matrix_determinant", "matrix_display", "matrix_multiplication", "modify_letter", "moving_targets", "negative_spelling", "office_worker", "partial_sums", "previousprime", "profanity_filter", "reverse_it", "rot21", "smallest"]
