@@ -1,2 +1,2 @@
-pub fn count_factorial_steps(factorial: u64) -> u64 {
+fn counting_words(words: &str) -> HashMap<String, u32> {
 }
