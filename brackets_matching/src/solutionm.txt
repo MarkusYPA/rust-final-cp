@@ -1,99 +1,60 @@
-use std::collections::HashMap;
-
-/*
-cargo run "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>."
-Hello World!
-
-cargo run "+++++[>++++[>++++H>+++++i<<-]>>>++\n<<<<-]>>--------.>+++++.>."
-Hi
-
-cargo run "++++++++++[>++++++++++>++++++++++>++++++++++<<<-]>---.>--.>-.>++++++++++."
-abc
-*/
-
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
+    let mut args: Vec<String> = std::env::args().collect();
+    args.remove(0);
 
-    if args.len() == 2 {
-        brain_fuck(&args[1]);
-    }
-}
+    for w in args {
+        let mut a = 0;
+        let mut b = 0;
+        let mut c = 0;
+        let mut activated: Vec<char> = Vec::new();
 
-fn brain_fuck(input: &str) {
-    // move pointer: <, >
-    // change byte: +, -
-    // print byte: .
-    // to loop end if byte is 0: [ 
-    // to loop start if byte isn't 0: ] 
-
-    let mut bytes: Vec<u8> = vec![0; 4096];
-    let mut pointer: usize = 0;
-    let mut char_i: usize = 0;
-
-    // Input as vector se we can jump to different index
-    let s: Vec<char> = input.chars().filter(|c| "<>+-.[]".contains(*c)).collect();
-
-    // Map bracket pairs
-    let bracket_map = bracket_pairs(&s);
-
-    // What if index goes negative? Not tested.
-    while char_i < s.len() {
-        let c = s[char_i];
-
-        match c {
-            '>' => pointer += 1,
-            '<' => pointer -= 1,
-            '+' => bytes[pointer] += 1,
-            '-' => bytes[pointer] -= 1,
-            '.' => print!("{}", bytes[pointer] as char),
-            '[' => {
-                if bytes[pointer] == 0 {
-                    char_i = *bracket_map.get(&char_i).unwrap();
-                    continue;   // Don't increment char_i
+        for ch in w.chars() {
+            match ch {
+                '(' => {
+                    a += 1;
+                    activated.push('a');
                 }
-            }
-            ']' => {
-                if bytes[pointer] != 0 {
-                    char_i = *bracket_map.get(&char_i).unwrap();
-                    continue;
+                '[' => {
+                    b += 1;
+                    activated.push('b');
                 }
+                '{' => {
+                    c += 1;
+                    activated.push('c');
+                }
+                ')' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'a' {
+                        break;
+                    }
+                    a -= 1;
+                    activated.pop();
+                }
+                ']' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'b' {
+                        break;
+                    }
+                    b -= 1;
+                    activated.pop();
+                }
+                '}' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'c' {
+                        break;
+                    }
+                    c -= 1;
+                    activated.pop();
+                }
+                _ => continue,
             }
-            _ => (),
+
+            if a < 0 || b < 0 || c < 0 {
+                break;
+            }
         }
 
-        char_i += 1;
+        if a == 0 && b == 0 && c == 0 && activated.is_empty() {
+            println!("OK");
+        } else {
+            println!("Error");
+        }
     }
 }
-
-fn bracket_pairs(s: &Vec<char>) -> HashMap<usize, usize> {
-    let mut map = HashMap::new();
-
-    let mut opens = Vec::new();
-    let mut closes = Vec::new();
-    let mut founds = Vec::new();
-    for (i, c) in s.iter().enumerate() {
-        if *c == '[' {
-            opens.push(i);
-            founds.push('[');
-        }
-
-        if *c == ']' {
-            if *founds.last().unwrap() == '[' {
-                map.insert(i, *opens.last().unwrap());
-                map.insert(*opens.last().unwrap(), i);
-
-                opens.pop();
-                founds.pop();
-            } else {
-                // This shouldn't happen. With good inputs the prev is always [
-                closes.push(i);
-                founds.push(']');
-            }
-        }
-    }
-
-    map
-}
-
-#[cfg(test)]
-mod tests;
