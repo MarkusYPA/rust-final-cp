@@ -14,7 +14,7 @@ Practice solving exercises listed to appear in the exam.
 
 ## Excercise Folder Contents
 
-- README.md: The execise as it appears on the platform
+- README.md: The exercise as it appears on the platform
 
 src/ subfolder:  
 - lib.rs: Write your answer here (exception: brackets_matching, where you write it in main.rs)
