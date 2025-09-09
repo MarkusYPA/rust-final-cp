@@ -11,7 +11,7 @@ Practice solving exercises listed to appear in the exam.
 5. Test the code with ```cargo test```
 6. Look at the solution text files for examples
 
-## Folder contents
+## Excercise Folder Contents
 
 - README.md: The execise as it appears on the platform
 
