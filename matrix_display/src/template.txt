@@ -1,0 +1,13 @@
+pub struct Matrix(pub Vec<Vec<i32>>);
+
+impl Matrix {
+    pub fn new(slice: &[&[i32]]) -> Self {
+
+    }
+}
+
+use std::fmt;
+
+impl fmt::Display for Matrix {
+
+}

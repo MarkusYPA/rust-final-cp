@@ -1,0 +1,1 @@
+/Users/markus.amberla/Documents/rustprojects/rust-final-cp/blood_types_s/target/debug/blood_types_s: /Users/markus.amberla/Documents/rustprojects/rust-final-cp/blood_types_s/src/lib.rs /Users/markus.amberla/Documents/rustprojects/rust-final-cp/blood_types_s/src/main.rs

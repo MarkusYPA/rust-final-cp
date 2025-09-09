@@ -1,0 +1,37 @@
+//use crate::OfficeWorker::*; // what was this??
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct OfficeWorker {
+    name: String,
+    age: u32,
+    role: WorkerRole,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum WorkerRole {
+    Admin,
+    User,
+    Guest,
+}
+
+impl From<&str> for OfficeWorker {
+    fn from(s: &str) -> Self {
+        let mut parts = s.split(',');
+        Self {
+            name: parts.next().unwrap().to_owned(),
+            age: parts.next().unwrap().parse().unwrap(),
+            role: WorkerRole::from(parts.next().unwrap()),
+        }
+    }
+}
+
+impl From<&str> for WorkerRole {
+    fn from(s: &str) -> Self {
+        match s {
+            "admin" => Self::Admin,
+            "user" => Self::User,
+            "guest" => Self::Guest,
+            _ => panic!("bad role!!"),
+        }
+    }
+}

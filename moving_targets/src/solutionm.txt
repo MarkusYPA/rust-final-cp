@@ -1,0 +1,50 @@
+pub struct Field {
+    head: Link,
+}
+
+type Link = Option<Box<Node>>; // 'recursion type'
+
+struct Node {
+    elem: Target,
+    next: Link,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct Target {
+    pub size: u32,
+    pub xp: u32,
+}
+
+impl Field {
+    pub fn new() -> Self {
+        Self {
+            head: Default::default(),
+        }
+    }
+    pub fn push(&mut self, target: Target) {
+        self.head = Some(Box::new(Node {
+            elem: target,
+            next: self.head.take(), // taketh it away from Option
+        }));
+    }
+    pub fn pop(&mut self) -> Option<Target> {
+        if let Some(old_head) = self.head.take() { // take from Option again            
+            self.head = old_head.next; // and again?
+            Some(old_head.elem)
+        } else {
+            None
+        }
+    }
+    pub fn peek(&self) -> Option<&Target> {
+        if let Some(head) = self.head.as_ref() {
+            return Some(&head.elem);
+        }
+        None
+    }
+    pub fn peek_mut(&mut self) -> Option<&mut Target> {
+        if let Some(head) = self.head.as_mut() {
+            return Some(&mut head.elem);                            // return as &mut
+        }
+        None
+    }
+}

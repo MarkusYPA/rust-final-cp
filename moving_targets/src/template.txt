@@ -1,0 +1,23 @@
+pub struct Field {
+    head: Link,
+}
+
+type Link = // To be implemented
+
+struct Node {
+    elem: Target,
+    next: Link,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct Target {
+    pub size: u32,
+    pub xp: u32,
+}
+impl Field {
+    pub fn new() -> Self {}
+    pub fn push(&mut self, target: Target) {}
+    pub fn pop(&mut self) -> Option<Target> {}
+    pub fn peek(&self) -> Option<&Target> {}
+    pub fn peek_mut(&mut self) -> Option<&mut Target> {}
+}

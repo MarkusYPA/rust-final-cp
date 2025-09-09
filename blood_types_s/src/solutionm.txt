@@ -1,0 +1,66 @@
+#[derive(Debug, PartialEq, Eq, Clone, PartialOrd, Ord)]
+pub enum Antigen {
+    A,
+    AB,
+    B,
+    O,
+}
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
+pub enum RhFactor {
+    Positive,
+    Negative,
+}
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
+pub struct BloodType {
+    pub antigen: Antigen,
+    pub rh_factor: RhFactor,
+}
+
+impl BloodType {
+    pub fn can_receive_from(&self, other: &Self) -> bool {
+        if self.rh_factor == RhFactor::Positive || other.rh_factor == RhFactor::Negative {
+            // self positive or other negative
+            match self.antigen {
+                Antigen::A => return other.antigen == Antigen::A || other.antigen == Antigen::O,
+                Antigen::O => return other.antigen == Antigen::O,
+                Antigen::B => return other.antigen == Antigen::B || other.antigen == Antigen::O,
+                Antigen::AB => return true,
+            }
+        }
+
+        // self negative, other positive
+        false
+    }
+
+    pub fn donors(&self) -> Vec<Self> {
+        let mut dons = Vec::new();
+
+        for rh in [RhFactor::Negative, RhFactor::Positive] {
+            for ag in [Antigen::A, Antigen::AB, Antigen::B, Antigen::O] {
+                let bt = BloodType{ antigen: ag, rh_factor: rh.clone()};
+                if self.can_receive_from(&bt) {
+                    dons.push(bt);
+                }
+            } 
+        }
+
+        dons
+    }
+
+    pub fn recipients(&self) -> Vec<Self> {
+        let mut recs = Vec::new();
+
+        for rh in [RhFactor::Negative, RhFactor::Positive] {
+            for ag in [Antigen::A, Antigen::AB, Antigen::B, Antigen::O] {
+                let bt = BloodType{ antigen: ag, rh_factor: rh.clone()};
+                if bt.can_receive_from(self) {
+                    recs.push(bt);
+                }
+            } 
+        }
+        
+        recs
+    }
+}

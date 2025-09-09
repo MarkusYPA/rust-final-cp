@@ -1,0 +1,111 @@
+use std::fmt;
+
+#[derive(Clone, Debug, PartialEq, Default)]
+pub struct Table {
+    pub headers: Vec<String>,
+    pub body: Vec<Vec<String>>,
+}
+
+impl fmt::Display for Table {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+
+        if self.headers.is_empty() && self.body.is_empty() {
+            return Ok(());
+        }
+        
+        // column widths without extra spaces
+
+        let mut widths = vec![0; self.headers.len()];
+        for (i, head) in self.headers.iter().enumerate() {
+            if head.len() > widths[i] {
+                widths[i] = head.len();
+            }
+        }
+
+        for r in &self.body {
+            for (i, ele) in r.iter().enumerate() {
+                if ele.len() > widths[i] {
+                    widths[i] = ele.len();
+                }
+            }
+        }
+
+        // add (row_len - entry.len()) / 2 + 1 leading spaces
+        // add element itself 
+        // add same trailing spaces
+        // if entry.chars().count() % 2 != row_len % 2, add one more space
+        // vertical lines everywhere
+
+        // header row
+        let mut head_row = String::from("|");
+        for (i, e) in self.headers.iter().enumerate() {
+            let spaces = (widths[i] - e.chars().count()) / 2 + 1; // +1 for space after |
+            for _ in 0..spaces {
+                head_row.push(' ');
+            }
+            head_row.push_str(&e);
+            for _ in 0..spaces {
+                head_row.push(' ');
+            }
+            if e.chars().count() % 2 != widths[i] % 2 {
+                head_row.push(' ');
+            }
+            head_row.push('|');
+        }
+
+        // line in between
+        let mut line_row = String::from("|");
+        for (i, w) in widths.iter().enumerate() {
+            for _ in 0..*w + 2 {
+                line_row.push('-');
+            }
+
+            if i < widths.len() - 1 {
+                line_row.push('+');
+            } else {
+                line_row.push('|');
+            }
+        }
+
+        // body rows
+        let mut body_rows = Vec::new();
+        for br in &self.body {
+
+            let mut body_row = String::from("|");
+            for (i, e) in br.iter().enumerate() {
+                let spaces = (widths[i] - e.chars().count()) / 2 + 1; // +1 for space after |
+                for _ in 0..spaces {
+                    body_row.push(' ');
+                }
+                body_row.push_str(&e);
+                for _ in 0..spaces {
+                    body_row.push(' ');
+                }
+                if e.chars().count() % 2 != widths[i] % 2 {
+                    body_row.push(' ');
+                }
+                body_row.push('|');
+            }
+
+            body_rows.push(body_row);
+        }
+
+        // Do the printing
+        writeln!(f, "{}", head_row)?; // write(ln) with ? at end
+        writeln!(f, "{}", line_row)?;
+        for r in body_rows {
+            writeln!(f, "{}", r)?;
+        }
+
+        Ok(())
+    }
+}
+
+impl Table {
+    pub fn new() -> Table {
+        Default::default()
+    }
+    pub fn add_row(&mut self, row: &[String]) {
+        self.body.push(Vec::from(row));
+    }
+}

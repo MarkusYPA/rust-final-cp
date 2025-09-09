@@ -1,0 +1,5 @@
+#[derive(Debug, PartialEq, Eq)]
+pub struct Outfit {
+    pub jacket: Jacket,
+    pub hat: Hat,
+}

@@ -1,0 +1,22 @@
+pub fn prev_prime(nbr: u64) -> u64  {
+    if nbr < 3 {
+        return 0;
+    } 
+    let mut n = nbr -1 ;
+    while !is_prime(n) && n > 0 {
+        n -= 1;
+    }
+    n
+}
+
+fn is_prime(n: u64) -> bool {
+    if n < 3 {
+        return n == 2;
+    }
+    for x in 2..n {
+        if n%x == 0 {
+            return false;
+        }
+    }
+    true
+}

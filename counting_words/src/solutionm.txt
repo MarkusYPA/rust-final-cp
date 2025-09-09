@@ -1,0 +1,26 @@
+use std::collections::HashMap;
+
+pub fn counting_words(words: &str) -> HashMap<String, u32> {
+    let words = words.split_ascii_whitespace();
+
+    let mut clean_words = Vec::new();
+    for w in words {
+        let mut clean_word = String::new();
+        for c in w.chars() {
+            if c.is_ascii_alphanumeric() || c == '\'' {
+                clean_word.push(c.to_ascii_lowercase());
+            }
+        }
+        if !clean_word.is_empty() {
+            clean_words.push(clean_word.trim_matches('\'').to_owned());
+        }
+    }
+
+    let mut res: HashMap<String, u32> = HashMap::new();
+    for cw in clean_words {
+        let count = res.entry(cw).or_insert(0);
+        *count += 1;
+    }
+
+    res
+}

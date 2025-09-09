@@ -1,0 +1,63 @@
+#[derive(Clone, Debug, PartialEq, Default)]
+pub struct Table {
+    pub headers: Vec<String>,
+    pub body: Vec<Vec<String>>,
+}
+
+impl Table {
+    pub fn new() -> Table {
+        //Table{ headers: Default::default(), body: Default::default()}
+        Default::default()
+    }
+
+    pub fn add_row(&mut self, row: &[String]) {
+        self.body.push(Vec::from(row));
+    }
+
+    // Use function signature in type constraint
+    pub fn filter_col<T: Fn(&str) -> bool>(&self, filter: T) -> Option<Self> {
+        let mut result = Table::new();
+
+        for (i, h) in self.headers.iter().enumerate() {
+            if filter(h) {
+                result.headers.push(h.to_owned());
+
+                for row in self.body.clone() {
+                    result.body.push(
+                        row.iter()
+                            .enumerate()
+                            .filter(|(j, _)| *j == i)
+                            .map(|(_, v)| v.clone())
+                            .collect(),
+                    );
+                }
+            }
+        }
+
+        Some(result)
+    }
+
+    pub fn filter_row<T: Fn(&str) -> bool>(&self, col_name: &str, filter: T) -> Option<Self> {
+        let mut result = Table::new();
+        let mut col_index = -1;
+
+        for (i, title) in self.headers.iter().enumerate() {
+            result.headers.push(title.to_owned());
+            if title == col_name {
+                col_index = i as i32;
+            }
+        }
+
+        if col_index == -1 {
+            return None;
+        }
+
+        for row in self.body.clone() {
+            if filter(&row[col_index as usize]) {
+                result.body.push(row);
+            }
+        }
+
+        Some(result)
+    }
+}

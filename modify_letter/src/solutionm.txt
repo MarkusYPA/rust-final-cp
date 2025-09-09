@@ -1,0 +1,28 @@
+pub fn remove_letter_sensitive(s: &str, letter: char) -> String {
+    let mut v = s.chars().collect::<Vec<char>>();
+    v.retain(|c| c != &letter);
+    v.iter().collect()
+}
+
+pub fn remove_letter_insensitive(s: &str, letter: char) -> String {
+    let mut v = s.chars().collect::<Vec<char>>();
+    v.retain(|c| c != &letter.to_ascii_lowercase());
+    v.retain(|c| c != &letter.to_ascii_uppercase());
+    v.iter().collect()
+}
+
+pub fn swap_letter_case(s: &str, letter: char) -> String {
+    let mut result = String::new();
+    for c in s.chars() {
+        if c.to_ascii_lowercase() == letter.to_ascii_lowercase() {
+            if c.is_ascii_uppercase() {
+                result.push(c.to_ascii_lowercase());
+            } else {
+                result.push(c.to_ascii_uppercase());
+            }
+        } else {
+            result.push(c);
+        }
+    }
+    result
+}

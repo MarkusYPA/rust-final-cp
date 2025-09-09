@@ -1,0 +1,65 @@
+use std::fmt;
+
+pub struct Park {
+    pub name: String,
+    pub park_type: ParkType,
+    pub address: String,
+    pub cap: String,
+    pub state: String,
+}
+
+pub enum ParkType {
+    Garden,
+    Forest,
+    Playground,
+}
+
+impl fmt::Display for Park {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut res = String::from(format!("{}", self.park_type));
+
+        res.push_str(" - ");
+
+        if self.name.is_empty() {
+            res.push_str("No name");
+        } else {
+            res.push_str(&self.name.as_str());
+        }
+
+        res.push_str(", ");
+
+        if self.address.is_empty() {
+            res.push_str("No address");
+        } else {
+            res.push_str(&self.address.as_str());
+        }
+
+        res.push_str(", ");
+
+        if self.cap.is_empty() {
+            res.push_str("No cap");
+        } else {
+            res.push_str(&self.cap.as_str());
+        }
+
+        res.push_str(" - ");
+
+        if self.state.is_empty() {
+            res.push_str("No state");
+        } else {
+            res.push_str(&self.state.as_str());
+        }
+
+        write!(f, "{}", res)
+    }
+}
+
+impl fmt::Display for ParkType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Forest => write!(f, "forest"),
+            Self::Garden => write!(f, "garden"),
+            Self::Playground => write!(f, "playground"),
+        }
+    }
+}

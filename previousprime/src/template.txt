@@ -1,0 +1,3 @@
+pub fn prev_prime(nbr: u64) -> u64  {
+    todo!()
+}

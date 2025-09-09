@@ -1,0 +1,25 @@
+pub fn count_factorial_steps(factorial: u64) -> u64 {
+    if factorial < 2 {
+        return 0;
+    }
+
+    let mut curr = 1;
+    let mut mult = 1;
+    let mut steps = 0;
+
+    while curr < factorial {
+        curr *= mult;
+        steps += 1;
+
+        if curr > factorial {
+            return 0;
+        }
+        if curr == factorial {
+            return steps;
+        }
+
+        mult += 1;
+    }
+
+    0
+}

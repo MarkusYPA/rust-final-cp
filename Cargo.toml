@@ -1,0 +1,35 @@
+[package]
+name = "rust-final-cp"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+blood_types_s = { version = "0.1.0", path = "blood_types_s" }
+car_rental = { version = "0.1.0", path = "car_rental" }
+count_factorial_steps = { version = "0.1.0", path = "count_factorial_steps" }
+counting_words = { version = "0.1.0", path = "counting_words" }
+display_table = { version = "0.1.0", path = "display_table" }
+dress_code = { version = "0.1.0", path = "dress_code" }
+filter_table = { version = "0.1.0", path = "filter_table" }
+format_me = { version = "0.1.0", path = "format_me" }
+get_document_id = { version = "0.1.0", path = "get_document_id" }
+lib = { version = "0.1.0", path = "lib" }
+lucas_number = { version = "0.1.0", path = "lucas_number" }
+lunch_queue = { version = "0.1.0", path = "lunch_queue" }
+matrix_determinant = { version = "0.1.0", path = "matrix_determinant" }
+matrix_display = { version = "0.1.0", path = "matrix_display" }
+matrix_multiplication = { version = "0.1.0", path = "matrix_multiplication" }
+modify_letter = { version = "0.1.0", path = "modify_letter" }
+moving_targets = { version = "0.1.0", path = "moving_targets" }
+negative_spelling = { version = "0.1.0", path = "negative_spelling" }
+office_worker = { version = "0.1.0", path = "office_worker" }
+partial_sums = { version = "0.1.0", path = "partial_sums" }
+previousprime = { version = "0.1.0", path = "previousprime" }
+profanity_filter = { version = "0.1.0", path = "profanity_filter" }
+reverse_it = { version = "0.1.0", path = "reverse_it" }
+rot21 = { version = "0.1.0", path = "rot21" }
+smallest = { version = "0.1.0", path = "smallest" }
+
+
+[workspace]
+members = [ "blood_types_s" "car_rental", "count_factorial_steps", "counting_words", "display_table", "dress_code", "filter_table", "format_me", "get_document_id", "lib", "lucas_number", "lunch_queue", "matrix_determinant", "matrix_display", "matrix_multiplication", "modify_letter", "moving_targets", "negative_spelling", "office_worker", "partial_sums", "previousprime", "profanity_filter", "reverse_it", "rot21", "smallest"]

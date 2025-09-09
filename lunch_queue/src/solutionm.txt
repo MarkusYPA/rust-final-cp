@@ -1,0 +1,84 @@
+#[derive(Debug)]
+pub struct Queue {
+    pub node: Link,
+}
+
+pub type Link = Option<Box<Person>>;
+
+#[derive(Debug)]
+pub struct Person {
+    pub discount: i32,
+    pub name: String,
+    pub next_person: Link,
+}
+
+impl Queue {
+    pub fn new() -> Queue {
+        Queue {
+            node: Default::default(),
+        }
+    }
+
+    pub fn add(&mut self, name: String, discount: i32) {
+        let np = Person {
+            discount,
+            name,
+            next_person: self.node.take(),
+        };
+        self.node = Some(Box::new(np));
+    }
+
+    pub fn invert_queue(&mut self) {
+        let mut prev: Link = None;
+        let mut curr = self.node.take();
+
+        while let Some(mut boxed_person) = curr {
+            // save who next is (will be None eventually)
+            let next = boxed_person.next_person.take();
+            // replace curr.next with prev (inversion). None for new last.
+            boxed_person.next_person = prev;
+            // Move on: put curr to prev, and next to curr
+            prev = Some(boxed_person);
+            curr = next;
+        }
+        // last prev (guaranteed Some) becomes new first
+        self.node = prev;
+    }
+
+    pub fn rm(&mut self) -> Option<(String, i32)> {
+        // If the queue is empty, return None
+        // mutable from inside Option with as_mut
+        let mut curr = self.node.as_mut()?;
+
+        // If there's only one person, remove and return them
+        if curr.next_person.is_none() {
+            let last = self.node.take().unwrap();
+            return Some((last.name, last.discount));
+        }
+
+        // Otherwise, traverse to the second-to-last person
+        // ref mut instead of &mut
+        while let Some(ref mut next_box) = curr.next_person {
+            if next_box.next_person.is_none() {
+                let last = curr.next_person.take().unwrap();
+                return Some((last.name, last.discount));
+            }
+            curr = curr.next_person.as_mut().unwrap();
+        }
+
+        None
+    }
+
+    pub fn search(&self, name: &str) -> Option<(String, i32)> {
+       let mut curr = &self.node;
+
+        while let Some(boxed_person) = curr {
+            if boxed_person.name == name {
+                return Some((name.to_owned(), boxed_person.discount));
+            }
+            curr = &boxed_person.next_person;
+        }
+
+        None
+    }
+}

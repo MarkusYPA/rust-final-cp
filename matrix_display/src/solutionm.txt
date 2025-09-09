@@ -1,0 +1,31 @@
+#[derive(Debug, Clone)]
+pub struct Matrix(pub Vec<Vec<i32>>);
+
+impl Matrix {
+    pub fn new(slice: &[&[i32]]) -> Self {
+        //Self(slice.iter().map(|row| Vec::from(*row)).collect())
+        Self(slice.iter().map(|row| row.to_vec()).collect())
+    }
+}
+
+use std::fmt;
+
+impl fmt::Display for Matrix {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut rs = String::new();
+        for row in &self.0 {        // Access vector in this single-element tuple struct with .0            
+            rs.push('(');
+
+            for (j, num) in row.iter().enumerate() {
+                rs.push_str(&num.to_string());
+                if j < row.len() - 1 {
+                    rs.push(' ');
+                }
+            }
+
+            rs.push_str(")\n");
+        }
+
+        write!(f, "{}", rs.trim())
+    }
+}

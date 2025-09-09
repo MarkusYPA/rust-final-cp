@@ -1,0 +1,88 @@
+use std::collections::HashMap;
+
+pub fn negative_spell(n: i64) -> String {
+    if n > 0 {
+        return "error: positive number".to_owned();
+    }
+    if n == 0 {
+        return "zero".to_owned();
+    }
+
+    if n == -1000000 {
+        return "minus one million".to_owned();
+    }
+
+    let mut result = String::from("minus ");
+    let num = n * -1;
+
+    let thousands = num / 1000;
+    let rest = num % 1000;
+
+    if thousands > 0 {
+        result.push_str(&hundreds(&mut (thousands as i32)));
+        result.push_str(" thousand ")
+    }
+
+    if rest > 0 {
+        result.push_str(&hundreds(&mut (rest as i32)));
+    }
+
+    result.trim().to_owned()
+}
+
+fn hundreds(n: &mut i32) -> String {
+    let names = HashMap::from([
+        (1, "one"),
+        (2, "two"),
+        (3, "three"),
+        (4, "four"),
+        (5, "five"),
+        (6, "six"),
+        (7, "seven"),
+        (8, "eight"),
+        (9, "nine"),
+        (10, "ten"),
+        (11, "eleven"),
+        (12, "twelve"),
+        (13, "thirteen"),
+        (14, "fourteen"),
+        (15, "fifteen"),
+        (16, "sixteen"),
+        (17, "seventeen"),
+        (18, "eighteen"),
+        (19, "nineteen"),
+        (20, "twenty"),
+        (30, "thirty"),
+        (40, "fourty"),
+        (50, "fifty"),
+        (60, "sixty"),
+        (70, "seventy"),
+        (80, "eighty"),
+        (90, "ninety"),
+    ]);
+
+    let mut res = String::new();
+
+    if *n >= 100 {
+        let digit = *n / 100;
+        *n %= 100;
+        res.push_str(names[&digit]);
+        res.push_str(" hundred ");
+    }
+
+    if *n >= 20 {
+        let mut digit = *n / 10;
+        digit *= 10;
+        *n %= 10;
+        res.push_str(names[&digit]);
+        if *n > 0 {
+            res.push('-');
+        }
+    }
+
+    if *n >= 1 {
+        res.push_str(names[n]);
+    }
+
+    res
+}

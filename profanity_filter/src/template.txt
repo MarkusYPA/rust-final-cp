@@ -1,0 +1,3 @@
+pub fn check_ms(message: &str) -> Result<&str, &str> {
+    todo!()
+}

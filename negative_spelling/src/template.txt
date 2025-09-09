@@ -1,0 +1,3 @@
+pub fn negative_spell(n: i64) -> String {
+
+}

@@ -1,0 +1,28 @@
+pub struct Queue {
+    pub node: Link,
+}
+
+pub type Link =
+
+pub struct Person {
+    pub discount: i32,
+    pub name: String,
+}
+
+impl Queue {
+    pub fn new() -> Queue {
+
+    }
+    pub fn add(&mut self, name: String, discount: i32) {
+
+    }
+    pub fn invert_queue(&mut self) {
+
+    }
+    pub fn rm(&mut self) -> Option<(String, i32)> {
+
+    }
+    pub fn search(&self, name: &str) -> Option<(String, i32)> {
+
+    }
+}

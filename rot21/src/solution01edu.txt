@@ -1,0 +1,14 @@
+pub fn rot21(input: &str) -> String {
+    input
+        .chars()
+        .map(|character| match character {
+            'a'..='z' => {
+                ((((character as u8) - b'a') as i8 + 21).rem_euclid(26) as u8 + b'a') as char
+            }
+            'A'..='Z' => {
+                ((((character as u8) - b'A') as i8 + 21).rem_euclid(26) as u8 + b'A') as char
+            }
+            _ => character,
+        })
+        .collect::<String>()
+}

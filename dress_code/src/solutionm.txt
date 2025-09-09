@@ -1,0 +1,50 @@
+#[derive(Debug, PartialEq, Eq)]
+pub struct Outfit {
+    pub jacket: Jacket,
+    pub hat: Hat,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum Jacket {
+    Black,
+    White,
+    Flowers,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum Hat {
+    Snapback,
+    Baseball,
+    Fedora,
+}
+
+pub fn choose_outfit(
+    formality_level: Option<u32>,
+    invitation_message: Result<&str, &str>,
+) -> Outfit {
+    
+    let mut jacket: Jacket;
+    match formality_level {
+        Some(0) => jacket = Jacket::Black,
+        None => jacket = Jacket::Flowers,
+        _ => jacket = Jacket::White,
+    };
+
+    let mut hat: Hat;
+    match invitation_message {
+        Ok(_) => hat = Hat::Fedora,
+        _ => hat = Hat::Snapback,
+    };
+
+    if formality_level.is_none() {
+        match invitation_message {
+            Ok(_) => {},
+            _ => {
+                jacket = Jacket::Flowers;
+                hat = Hat::Baseball;
+            },
+        };
+    }
+
+    Outfit { jacket, hat }
+}

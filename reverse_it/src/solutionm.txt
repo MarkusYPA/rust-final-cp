@@ -1,0 +1,13 @@
+pub fn reverse_it(v: i32) -> String {
+    let v_str = v.to_string();
+    let mut result = String::new();
+    if let Some(s) = v_str.strip_prefix("-") {
+        result.push('-');
+        result.push_str(&s.chars().rev().collect::<String>());
+        result.push_str(&s);
+    } else {
+        result.push_str(&v_str.chars().rev().collect::<String>());
+        result.push_str(&v_str);
+    }
+    result
+}

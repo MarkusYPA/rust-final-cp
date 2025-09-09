@@ -1,0 +1,24 @@
+pub fn rot21(input: &str) -> String {
+    let alphas = "abcdefghijklmnopqrstuvwxyz";
+    let mut res = String::new();
+
+    for c in input.chars() {
+        if c.is_ascii_alphabetic() {
+            let is_up = c.is_ascii_uppercase();
+            let ind = alphas
+                .chars()
+                .position(|x| x == c.to_ascii_lowercase())
+                .unwrap();
+            let new_ind = (ind + 21) % alphas.len();
+            let mut new_char = alphas.chars().collect::<Vec<char>>()[new_ind];
+            if is_up {
+                new_char = new_char.to_ascii_uppercase();
+            }
+            res.push(new_char);
+        } else {
+            res.push(c);
+        }
+    }
+
+    res
+}
