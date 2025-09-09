@@ -4,12 +4,13 @@ Practice solving exercises listed to appear in the exam.
 
 ## How to Use
 
-1. Choose an exercise and navigate to its folder
-2. Read the README
-3. Start editing src/lib.rs directly, or paste template.txt over everything above #[cfg(test)] (see Notes).
-4. Run the code with ```cargo run```
-5. Test the code with ```cargo test```
-6. Look at the solution text files for examples
+1. Clone the repository to your computer
+2. Choose an exercise and navigate to its folder
+3. Read the README
+4. Start editing src/lib.rs directly, or paste template.txt over everything above #[cfg(test)] (see Notes).
+5. Run the code with ```cargo run```
+6. Test the code with ```cargo test```
+7. Look at the solution text files for examples
 
 ## Excercise Folder Contents
 
