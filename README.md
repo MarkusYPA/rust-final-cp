@@ -21,7 +21,7 @@ src/ subfolder:
 - main.rs:  Runs your code with modifiable inputs
 - tests.rs:  Actual tests the code needs to pass
 - solution01edu.txt: Example solution from the system
-- solutionm: My solution
+- solutionm.txt: My solution
 - template.txt: The empty base for the exercise
 
 
