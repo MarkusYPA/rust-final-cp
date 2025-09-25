@@ -1,11 +1,11 @@
 use std::fmt;
 
 pub struct Park {
-    pub name: String,
+    pub name: Option<String>,
     pub park_type: ParkType,
-    pub address: String,
-    pub cap: String,
-    pub state: String,
+    pub address: Option<String>,
+    pub cap: Option<String>,
+    pub state: Option<String>,
 }
 
 pub enum ParkType {

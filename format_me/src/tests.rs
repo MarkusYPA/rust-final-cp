@@ -3,11 +3,11 @@ use super::*;
 #[test]
 fn test_park() {
     let park = Park {
-        name: "Central Park".to_string(),
+        name: Some("Central Park".to_owned()),
         park_type: ParkType::Garden,
-        address: "Av. Sidónio Pais 4".to_string(),
-        cap: "1050-214".to_string(),
-        state: "Portugal".to_string(),
+        address: Some("Av. Sidónio Pais 4".to_owned()),
+        cap: Some("1050-214".to_owned()),
+        state: Some("Portugal".to_owned()),
     };
 
     assert_eq!(
@@ -19,11 +19,11 @@ fn test_park() {
 #[test]
 fn test_empty_name() {
     let park = Park {
-        name: "".to_string(),
+        name: None,
         park_type: ParkType::Forest,
-        address: "Av. Sidónio Pais 4".to_string(),
-        cap: "1050-214".to_string(),
-        state: "Portugal".to_string(),
+        address: Some("Av. Sidónio Pais 4".to_owned()),
+        cap: Some("1050-214".to_owned()),
+        state: Some("Portugal".to_owned()),
     };
 
     assert_eq!(
@@ -35,11 +35,11 @@ fn test_empty_name() {
 #[test]
 fn test_empty_all() {
     let park = Park {
-        name: "".to_string(),
+        name: None,
         park_type: ParkType::Playground,
-        address: "".to_string(),
-        cap: "".to_string(),
-        state: "".to_string(),
+        address: None,
+        cap: None,
+        state: None,
     };
 
     assert_eq!(

@@ -1,11 +1,11 @@
 use std::fmt;
 
 pub struct Park {
-    pub name: String,
+    pub name: Option<String>,
     pub park_type: ParkType,
-    pub address: String,
-    pub cap: String,
-    pub state: String,
+    pub address: Option<String>,
+    pub cap: Option<String>,
+    pub state: Option<String>,
 }
 
 pub enum ParkType {
@@ -20,34 +20,34 @@ impl fmt::Display for Park {
 
         res.push_str(" - ");
 
-        if self.name.is_empty() {
+        if let Some(name) = &self.name {
+            res.push_str(&name);
+        } else {
             res.push_str("No name");
-        } else {
-            res.push_str(&self.name.as_str());
         }
 
         res.push_str(", ");
 
-        if self.address.is_empty() {
+        if let Some(address) = &self.address {
+            res.push_str(&address);
+        } else {
             res.push_str("No address");
-        } else {
-            res.push_str(&self.address.as_str());
         }
 
         res.push_str(", ");
 
-        if self.cap.is_empty() {
-            res.push_str("No cap");
+        if let Some(cap) = &self.cap {
+            res.push_str(&cap);
         } else {
-            res.push_str(&self.cap.as_str());
+            res.push_str("No cap");
         }
 
         res.push_str(" - ");
 
-        if self.state.is_empty() {
-            res.push_str("No state");
+        if let Some(state) = &self.state {
+            res.push_str(&state);
         } else {
-            res.push_str(&self.state.as_str());
+            res.push_str("No state");
         }
 
         write!(f, "{}", res)
@@ -63,3 +63,6 @@ impl fmt::Display for ParkType {
         }
     }
 }
+
+#[cfg(test)]
+mod tests;
