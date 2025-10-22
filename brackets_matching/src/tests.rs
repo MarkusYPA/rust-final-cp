@@ -1,10 +1,9 @@
-use rand::distributions::Alphanumeric;
-use rand::{Rng, thread_rng};
-
+use rand::{Rng, distr::Alphanumeric};
 use std::process::{Command, Output};
 
 const MANIFEST_PATH: &str = "../brackets_matching/Cargo.toml";
 
+#[inline]
 fn run(s: Vec<&str>) -> Output {
     Command::new("cargo")
         .arg("run")
@@ -18,12 +17,13 @@ fn run(s: Vec<&str>) -> Output {
 #[test]
 fn random_tests() {
     fn random_alnum() -> String {
-        thread_rng()
+        rand::rng()
             .sample_iter(&Alphanumeric)
             .take(30)
             .map(char::from)
             .collect()
     }
+
     let mut args = vec![
         String::from("(johndoe)"),
         String::from("()"),
@@ -45,26 +45,15 @@ fn random_tests() {
 
 #[test]
 fn tests_both() {
-    struct Test<'a> {
-        arguments: ([&'a str; 2], &'a str),
-    }
-
-    let arr: [Test; 3] = [
-        Test {
-            arguments: (["", "{[(0 + 0)(1 + 1)](3*(-1)){()}}"], "OK\nOK\n"),
-        },
-        Test {
-            arguments: (["{][]}", "{3*[21/(12+ 23)]}"], "Error\nOK\n"),
-        },
-        Test {
-            arguments: (["{([)])}", "{{{something }- [something]}}"], "Error\nOK\n"),
-        },
+    let arr = [
+        (["", "{[(0 + 0)(1 + 1)](3*(-1)){()}}"], "OK\nOK\n"),
+        (["{][]}", "{3*[21/(12+ 23)]}"], "Error\nOK\n"),
+        (["{([)])}", "{{{something }- [something]}}"], "Error\nOK\n"),
     ];
 
     for t in arr.iter() {
-        let output = run(t.arguments.0.to_vec());
-        //println!("output is: {:?}", output);
-        assert_eq!(String::from_utf8_lossy(&output.stdout), t.arguments.1);
+        let output = run(t.0.to_vec());
+        assert_eq!(String::from_utf8_lossy(&output.stdout), t.1);
     }
 }
 

@@ -1,114 +1,102 @@
 use super::*;
+use std::{collections::HashMap, hash::Hash};
 
-#[test]
-fn compatible_ab_neg_with_a_pos() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Negative,
+fn slices_eq_unordered<T: Eq + Hash>(a: &[T], b: &[T]) -> bool {
+    let count_elems = |arr| {
+        let mut map = HashMap::new();
+        for item in arr {
+            *map.entry(item).or_insert(0) += 1;
+        }
+        map
     };
-    let other_bt = BloodType {
-        antigen: Antigen::A,
-        rh_factor: RhFactor::Positive,
-    };
-    assert!(!blood_type.can_receive_from(&other_bt));
+
+    count_elems(a) == count_elems(b)
 }
 
 #[test]
-fn compatible_a_neg_with_a_pos() {
-    let blood_type = BloodType {
-        antigen: Antigen::A,
-        rh_factor: RhFactor::Negative,
-    };
-    let other_bt = BloodType {
-        antigen: Antigen::A,
-        rh_factor: RhFactor::Positive,
-    };
-    assert!(!blood_type.can_receive_from(&other_bt));
+fn check_blood_type_relationships() {
+    let relationships = [
+        (
+            BloodType {
+                antigen: Antigen::AB,
+                rh_factor: RhFactor::Negative,
+            },
+            BloodType {
+                antigen: Antigen::A,
+                rh_factor: RhFactor::Positive,
+            },
+            false,
+        ),
+        (
+            BloodType {
+                antigen: Antigen::A,
+                rh_factor: RhFactor::Negative,
+            },
+            BloodType {
+                antigen: Antigen::A,
+                rh_factor: RhFactor::Positive,
+            },
+            false,
+        ),
+        (
+            BloodType {
+                antigen: Antigen::AB,
+                rh_factor: RhFactor::Negative,
+            },
+            BloodType {
+                antigen: Antigen::A,
+                rh_factor: RhFactor::Negative,
+            },
+            true,
+        ),
+        (
+            BloodType {
+                antigen: Antigen::AB,
+                rh_factor: RhFactor::Negative,
+            },
+            BloodType {
+                antigen: Antigen::O,
+                rh_factor: RhFactor::Positive,
+            },
+            false,
+        ),
+        (
+            BloodType {
+                antigen: Antigen::AB,
+                rh_factor: RhFactor::Positive,
+            },
+            BloodType {
+                antigen: Antigen::O,
+                rh_factor: RhFactor::Positive,
+            },
+            true,
+        ),
+        (
+            BloodType {
+                antigen: Antigen::AB,
+                rh_factor: RhFactor::Negative,
+            },
+            BloodType {
+                antigen: Antigen::O,
+                rh_factor: RhFactor::Negative,
+            },
+            true,
+        ),
+    ];
+
+    relationships
+        .into_iter()
+        .for_each(|(t1, t2, e)| assert_eq!(t1.can_receive_from(t2), e));
 }
 
 #[test]
-fn compatible_a_neg_with_ab_neg() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Negative,
-    };
-    let other_bt = BloodType {
-        antigen: Antigen::A,
-        rh_factor: RhFactor::Negative,
-    };
-    assert!(blood_type.can_receive_from(&other_bt));
-}
-
-#[test]
-fn compatible_ab_neg_with_o_pos() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Negative,
-    };
-    let other_bt = BloodType {
-        antigen: Antigen::O,
-        rh_factor: RhFactor::Positive,
-    };
-    assert!(!blood_type.can_receive_from(&other_bt));
-}
-
-#[test]
-fn compatible_ab_pos_with_o_pos() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Positive,
-    };
-    let other_bt = BloodType {
-        antigen: Antigen::O,
-        rh_factor: RhFactor::Positive,
-    };
-    assert!(blood_type.can_receive_from(&other_bt));
-}
-
-#[test]
-fn test_compatible_ab_neg_with_o_neg() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Negative,
-    };
-    let other_bt = BloodType {
-        antigen: Antigen::O,
-        rh_factor: RhFactor::Negative,
-    };
-    assert!(blood_type.can_receive_from(&other_bt));
-}
-
-#[test]
-fn test_antigen_ab_from_str() {
-    let blood_type = BloodType {
-        antigen: Antigen::AB,
-        rh_factor: RhFactor::Positive,
-    };
-    assert_eq!(blood_type.antigen, Antigen::AB);
-    assert_eq!(blood_type.rh_factor, RhFactor::Positive);
-}
-
-#[test]
-fn test_antigen_a_from_str() {
-    let blood_type = BloodType {
-        antigen: Antigen::A,
-        rh_factor: RhFactor::Negative,
-    };
-    assert_eq!(blood_type.antigen, Antigen::A);
-    assert_eq!(blood_type.rh_factor, RhFactor::Negative);
-}
-
-#[test]
-fn test_donors() {
-    let blood_type = BloodType {
+fn test_ab_pos_donors() {
+    let donors = BloodType {
         antigen: Antigen::AB,
         rh_factor: RhFactor::Positive,
-    };
-    let mut givers = blood_type.donors();
-    // println!("Before sorting {:?}", &givers);
-    givers.sort();
-    // println!("{:?}", &givers);
-    let mut expected = vec![
+    }
+    .donors();
+    let expected = [
         BloodType {
             antigen: Antigen::AB,
             rh_factor: RhFactor::Negative,
@@ -142,19 +130,17 @@ fn test_donors() {
             rh_factor: RhFactor::Positive,
         },
     ];
-    expected.sort();
-    assert_eq!(givers, expected);
+    assert!(slices_eq_unordered(&donors, &expected));
 }
 
 #[test]
 fn test_a_neg_donors() {
-    let blood = BloodType {
+    let donors = BloodType {
         antigen: Antigen::A,
         rh_factor: RhFactor::Negative,
-    };
-    let mut givers = blood.donors();
-    givers.sort();
-    let mut expected = vec![
+    }
+    .donors();
+    let expected = [
         BloodType {
             antigen: Antigen::A,
             rh_factor: RhFactor::Negative,
@@ -164,52 +150,48 @@ fn test_a_neg_donors() {
             rh_factor: RhFactor::Negative,
         },
     ];
-
-    expected.sort();
-    assert_eq!(givers, expected);
+    assert!(slices_eq_unordered(&donors, &expected));
 }
 
 #[test]
 fn test_o_neg_donors() {
-    let blood = BloodType {
+    let donors = BloodType {
         antigen: Antigen::O,
         rh_factor: RhFactor::Negative,
-    };
-
-    let mut givers = blood.donors();
-    givers.sort();
-    let mut expected = vec![blood.clone()];
-    expected.sort();
-    assert_eq!(givers, expected);
+    }
+    .donors();
+    let expected = [BloodType {
+        antigen: Antigen::O,
+        rh_factor: RhFactor::Negative,
+    }];
+    assert!(slices_eq_unordered(&donors, &expected));
 }
 
 #[test]
 fn test_ab_pos_recipients() {
-    let blood = BloodType {
+    let recipients = BloodType {
         antigen: Antigen::AB,
         rh_factor: RhFactor::Positive,
-    };
-    let mut recipients = blood.recipients();
-    recipients.sort();
-    let mut expected = vec![blood.clone()];
-    expected.sort();
-    assert_eq!(recipients, expected);
+    }
+    .recipients();
+    let expected = [BloodType {
+        antigen: Antigen::AB,
+        rh_factor: RhFactor::Positive,
+    }];
+    assert!(slices_eq_unordered(&recipients, &expected));
 }
 
 #[test]
 fn test_a_neg_recipients() {
-    let blood = BloodType {
+    let recipients = BloodType {
         antigen: Antigen::A,
         rh_factor: RhFactor::Negative,
-    };
-
-    let mut recipients = blood.recipients();
-    recipients.sort();
-    let mut expected = vec![
-        blood.clone(),
+    }
+    .recipients();
+    let expected = [
         BloodType {
-            antigen: Antigen::AB,
-            rh_factor: RhFactor::Positive,
+            antigen: Antigen::A,
+            rh_factor: RhFactor::Negative,
         },
         BloodType {
             antigen: Antigen::A,
@@ -219,7 +201,10 @@ fn test_a_neg_recipients() {
             antigen: Antigen::AB,
             rh_factor: RhFactor::Negative,
         },
+        BloodType {
+            antigen: Antigen::AB,
+            rh_factor: RhFactor::Positive,
+        },
     ];
-    expected.sort();
-    assert_eq!(recipients, expected);
+    assert!(slices_eq_unordered(&recipients, &expected));
 }
