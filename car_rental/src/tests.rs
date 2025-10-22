@@ -1,4 +1,5 @@
 use super::*;
+use std::cell::RefCell;
 
 #[test]
 fn test_rent_car() {

@@ -1,3 +1,11 @@
+
+
+/* 
+This is an outdated solution
+Maybe the logic can still be applied
+*/
+
+
 #[derive(Debug, PartialEq, Eq, Clone, PartialOrd, Ord)]
 pub enum Antigen {
     A,

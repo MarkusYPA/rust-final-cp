@@ -29,11 +29,10 @@ fn it_displays() {
     );
 }
 
-// An empty table must not display anything
 #[test]
 fn display_table_with_no_headers() {
     let table = Table::new();
-    assert_eq!(table.to_string(), "");
+    assert!(table.to_string().is_empty());
 }
 
 #[test]

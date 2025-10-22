@@ -1,9 +1,63 @@
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
+    let mut args: Vec<String> = std::env::args().collect();
+    args.remove(0);
 
-    //...
+    for w in args {
+        let mut a = 0;
+        let mut b = 0;
+        let mut c = 0;
+        let mut activated: Vec<char> = Vec::new();
+
+        for ch in w.chars() {
+            match ch {
+                '(' => {
+                    a += 1;
+                    activated.push('a');
+                }
+                '[' => {
+                    b += 1;
+                    activated.push('b');
+                }
+                '{' => {
+                    c += 1;
+                    activated.push('c');
+                }
+                ')' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'a' {
+                        break;
+                    }
+                    a -= 1;
+                    activated.pop();
+                }
+                ']' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'b' {
+                        break;
+                    }
+                    b -= 1;
+                    activated.pop();
+                }
+                '}' => {
+                    if !activated.is_empty() && *activated.last().unwrap() != 'c' {
+                        break;
+                    }
+                    c -= 1;
+                    activated.pop();
+                }
+                _ => continue,
+            }
+
+            if a < 0 || b < 0 || c < 0 {
+                break;
+            }
+        }
+
+        if a == 0 && b == 0 && c == 0 && activated.is_empty() {
+            println!("OK");
+        } else {
+            println!("Error");
+        }
+    }
 }
-
 
 #[cfg(test)]
 mod tests;

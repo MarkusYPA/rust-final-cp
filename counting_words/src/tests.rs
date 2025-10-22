@@ -1,30 +1,26 @@
 use super::*;
 
-fn test_counting(input: &str, expected: &[(&str, u32)]) {
-    let mut m: HashMap<String, u32> = counting_words(input);
-    for &(k, v) in expected.iter() {
-        assert_eq!(
-            (k, m.remove(&k.to_string().to_lowercase()).unwrap_or(0)),
-            (k, v)
-        );
-    }
-    // may fail with a message that clearly shows all extra pairs in the map
-    assert_eq!(m.iter().collect::<Vec<(&String, &u32)>>(), vec![]);
-}
+fn cmp_hashmap_unordered(input: &str, expected: &[(&str, u32)]) {
+    let m = counting_words(input);
 
+    assert_eq!(expected.len(), m.len());
+    expected
+        .iter()
+        .for_each(|&(k, v)| assert_eq!(m.get(k), Some(&v)));
+}
 
 #[test]
 fn test_simple() {
-    test_counting("word", &[("word", 1)]);
-    test_counting("hello", &[("hello", 1)]);
-    test_counting("hello big world", &[("hello", 1), ("big", 1), ("world", 1)]);
-    test_counting("one of each", &[("one", 1), ("of", 1), ("each", 1)]);
-    test_counting("Hello, 1, 2 HELLO", &[("Hello", 2), ("1", 1), ("2", 1)]);
-    test_counting(
+    cmp_hashmap_unordered("word", &[("word", 1)]);
+    cmp_hashmap_unordered("hello", &[("hello", 1)]);
+    cmp_hashmap_unordered("hello big world", &[("hello", 1), ("big", 1), ("world", 1)]);
+    cmp_hashmap_unordered("one of each", &[("one", 1), ("of", 1), ("each", 1)]);
+    cmp_hashmap_unordered("Hello, 1, 2 HELLO", &[("hello", 2), ("1", 1), ("2", 1)]);
+    cmp_hashmap_unordered(
         "Batman, BATMAN, batman, Stop stop",
         &[("batman", 3), ("stop", 2)],
     );
-    test_counting(
+    cmp_hashmap_unordered(
         " multiple   whitespace",
         &[("multiple", 1), ("whitespace", 1)],
     );
@@ -32,7 +28,7 @@ fn test_simple() {
 
 #[test]
 fn test_count_multiple_occurrences() {
-    test_counting(
+    cmp_hashmap_unordered(
         "one fish two fish red fish blue fish",
         &[("one", 1), ("fish", 4), ("two", 1), ("red", 1), ("blue", 1)],
     );
@@ -40,15 +36,15 @@ fn test_count_multiple_occurrences() {
 
 #[test]
 fn test_multi_lines() {
-    test_counting(
+    cmp_hashmap_unordered(
         "Game\nNight\nTomorrow",
-        &[("Game", 1), ("Night", 1), ("Tomorrow", 1)],
+        &[("game", 1), ("night", 1), ("tomorrow", 1)],
     );
 }
 
 #[test]
 fn test_punctuation() {
-    test_counting(
+    cmp_hashmap_unordered(
         "keyboard : mouse on the desk : Computer!!&@$%^&",
         &[
             ("keyboard", 1),
@@ -56,14 +52,14 @@ fn test_punctuation() {
             ("on", 1),
             ("the", 1),
             ("desk", 1),
-            ("Computer", 1),
+            ("computer", 1),
         ],
     );
 }
 
 #[test]
 fn with_apostrophes() {
-    test_counting(
+    cmp_hashmap_unordered(
         "First: don't laugh. Then: don't cry.",
         &[
             ("first", 1),
@@ -77,7 +73,7 @@ fn with_apostrophes() {
 
 #[test]
 fn test_apostrophe() {
-    test_counting(
+    cmp_hashmap_unordered(
         "Joe can't tell between 'large' and large.",
         &[
             ("joe", 1),

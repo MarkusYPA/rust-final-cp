@@ -14,6 +14,7 @@ fn test_get_document_id_ok() {
 
     assert_eq!(Ok(13), office.get_document_id());
 }
+
 #[test]
 fn test_get_document_id_closed() {
     let office = {
@@ -26,6 +27,7 @@ fn test_get_document_id_closed() {
 
     assert_eq!(Err(ErrorOffice::OfficeClose(2)), office.get_document_id());
 }
+
 #[test]
 fn test_get_document_id_not_found() {
     let office = {
@@ -41,6 +43,7 @@ fn test_get_document_id_not_found() {
         office.get_document_id()
     );
 }
+
 #[test]
 fn test_get_document_id_full() {
     let office = {
